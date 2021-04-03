@@ -61,40 +61,42 @@ var NineSlicer = (function()
      * メイン処理
      */
     mPT.Main = function () {
-        if (mPT.DocumentCheck()) {
-            var guidesX = guideUtil.GetGuidesVertical();
-            var guidesY= guideUtil.GetGuidesHorizontal();
-        
-            if (mPT.GuideCheck(guidesX, guidesY)) {
-                // 単位設定を保持＋Pixelに変換 -> 単位違いのズレ防止
-                var myRulerUnits = preferences.rulerUnits;
-                preferences.rulerUnits = Units.PIXELS;
-                
-                var sliceArea = mPT.SetSliceArea(guidesX, guidesY);
-                
-                layerUtil.MergeAllLayer(false);
+        if (!mPT.DocumentCheck()) 
+            return;
+
+        var guidesX = guideUtil.GetGuidesVertical();
+        var guidesY= guideUtil.GetGuidesHorizontal();
+    
+        if (!mPT.GuideCheck(guidesX, guidesY))
+            return;
             
-                // スライス処理
-                mPT.DeleteSliceArea(sliceArea);
-                mPT.MoveSlice(sliceArea);
-                
-                // アルファでトリミング
-                activeDocument.trim(TrimType.TRANSPARENT, true, true, true, true);
-                
-                // 書き出しフォルダを作成して保存
-                var path = activeDocument.path + "/" + NAME_EXPORT_FOLDER;
-                ioUtil.MakeFolder(path);
-                path = path + "/" + ioUtil.RemoveFileExtension(activeDocument.name);
-                ioUtil.SavePNG(path);
-                
-                activeDocument.selection.deselect();				
-                
-                // 単位設定を元に戻す
-                preferences.rulerUnits = myRulerUnits;
-                
-                alert("スライスが完了しました。", "完了");
-            }
-        }
+        // 単位設定を保持＋Pixelに変換 -> 単位違いのズレ防止
+        var myRulerUnits = preferences.rulerUnits;
+        preferences.rulerUnits = Units.PIXELS;
+        
+        var sliceArea = mPT.SetSliceArea(guidesX, guidesY);
+        
+        layerUtil.MergeAllLayer(false);
+    
+        // スライス処理
+        mPT.DeleteSliceArea(sliceArea);
+        mPT.MoveSlice(sliceArea);
+        
+        // アルファでトリミング
+        activeDocument.trim(TrimType.TRANSPARENT, true, true, true, true);
+        
+        // 書き出しフォルダを作成して保存
+        var path = activeDocument.path + "/" + NAME_EXPORT_FOLDER;
+        ioUtil.MakeFolder(path);
+        path = path + "/" + ioUtil.RemoveFileExtension(activeDocument.name);
+        ioUtil.SavePNG(path);
+        
+        activeDocument.selection.deselect();				
+        
+        // 単位設定を元に戻す
+        preferences.rulerUnits = myRulerUnits;
+        
+        alert("スライスが完了しました。", "完了");
     };
 
     /**
