@@ -1,6 +1,6 @@
 ﻿/**
  * 9スライス画像を作成するツール(ガイドを指定)
- * @author h.tawara <http://artawa.hatenablog.com/>
+ * @author h-tawara <https://www.omusubi-tech.com/>
  */
 
 #target photoshop
@@ -10,9 +10,6 @@
 #include "util/GuideUtility.jsx";
 #include "util/IOUtility.jsx";
 
-/**
- * 9スライス
- */
 var NineSlicer = (function()
 {
     //=======================================================================================================
@@ -123,17 +120,14 @@ var NineSlicer = (function()
      * @return {bool} (true = 設定されている, false = されていない)
      */
     mPT.GuideCheck = function (_guidesVer, _guidesHor) {
-        // ガイドが設定されているか？
         if (app.activeDocument.guides.length == 0) {
             alert("ガイドが設定されていません。\nガイドを設定してください。");
             return false;
         }
-        // 縦ラインガイドのチェック
         if (!(_guidesVer.length == 2 || _guidesVer.length == 0)) {
             alert("\n縦ラインのガイドは2つ設定してください。");
             return false;
         }
-        // 横ラインガイドのチェック
         if (!(_guidesHor.length == 2 || _guidesHor.length == 0)) {
             alert("\n横ラインのガイドは2つ設定してください。");
             return false;
